@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   InsurancePackage.init({
-    price: DataTypes.STRING,
-    description: DataTypes.STRING,
-    buy_date: DataTypes.DATE
+    name: DataTypes.STRING,
+    cost: DataTypes.STRING,
+    description: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'InsurancePackage',
