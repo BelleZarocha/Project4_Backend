@@ -1,3 +1,8 @@
+const User = require("../models").User;
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+
 const test =(req,res)=>{
     res.json({"test":"test"});
 };
