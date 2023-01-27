@@ -14,13 +14,14 @@ const login = (req, res) => {
             },
         })
             .then((foundUser) => {
-                // console.log(foundUser)
+                console.log(foundUser)
                 if (foundUser) {
                     bcrypt.compare(
                         req.body.password,
                         foundUser.password,
                         (err, match) => {
                             if (match) {
+                                console.log("match")
                                 const token = jwt.sign(
                                     {
                                         username: foundUser.username,
@@ -35,12 +36,12 @@ const login = (req, res) => {
                                 res.cookie("jwt", token);
                                 res.json(token);
                             } else {
-                                return res.sendStatus(400);
+                                return res.sendStatus(401);
                             }
                         }
                     );
                 } else {
-                    return res.sendStatus(400);
+                    return res.sendStatus(402);
                 }
             })
     } catch (e) {
