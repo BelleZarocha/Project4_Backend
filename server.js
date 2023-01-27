@@ -38,6 +38,6 @@ const verifyToken = (req, res, next) => {
 app.use("/user", routes.user);
 
 
-app.listen(process.env.PORT, () => {
+app.listen(8000, () => {
     console.log(`Listening on port ${process.env.PORT}`);
 });
