@@ -160,6 +160,7 @@ const edit = (req, res) => {
                 phone: req.body.phone,
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
+                address: req.body.address,
             },
             {
                 where: {username: req.user.username},
