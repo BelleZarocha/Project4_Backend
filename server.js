@@ -17,6 +17,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use("/packages", routes.packages);
 
 const verifyToken = (req, res, next) => {
     const bearerHeader = req.headers["authorization"];
@@ -37,6 +38,35 @@ const verifyToken = (req, res, next) => {
 };
 app.use("/user", routes.user);
 
+function print (path, layer) {
+    if (layer.route) {
+        layer.route.stack.forEach(print.bind(null, path.concat(split(layer.route.path))))
+    } else if (layer.name === 'router' && layer.handle.stack) {
+        layer.handle.stack.forEach(print.bind(null, path.concat(split(layer.regexp))))
+    } else if (layer.method) {
+        console.log('%s /%s',
+            layer.method.toUpperCase(),
+            path.concat(split(layer.regexp)).filter(Boolean).join('/'))
+    }
+}
+
+function split (thing) {
+    if (typeof thing === 'string') {
+        return thing.split('/')
+    } else if (thing.fast_slash) {
+        return ''
+    } else {
+        var match = thing.toString()
+            .replace('\\/?', '')
+            .replace('(?=\\/|$)', '$')
+            .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
+        return match
+            ? match[1].replace(/\\(.)/g, '$1').split('/')
+            : '<complex:' + thing.toString() + '>'
+    }
+}
+
+app._router.stack.forEach(print.bind(null, []))
 
 app.listen(8000, () => {
     console.log(`Listening on port ${process.env.PORT}`);

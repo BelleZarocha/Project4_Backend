@@ -6,6 +6,33 @@ const jwt = require("jsonwebtoken");
 const test =(req,res)=>{
     res.json({"test":"test"});
 };
+
+const getUser = (req, res) => {
+    const bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== "undefined") {
+        const bearer = bearerHeader.split(" ");
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+    }
+
+    jwt.verify(req.token, process.env.JWT_SECRET, (err, decodedUser) => {
+        if (err || !decodedUser)
+            return res.status(401).json({error: "Unauthorized Request"});
+
+        req.user = decodedUser;
+        User.findOne({where: {username: decodedUser.username}}).then((resu) => {
+            console.log(resu)
+            res.json({
+                username: resu.username,
+                email: resu.email,
+                phone: resu.phone,
+                firstname: resu.firstname,
+                lastname: resu.lastname,
+            });
+        });
+    });
+};
+
 const login = (req, res) => {
     try {
         User.findOne({
@@ -162,5 +189,6 @@ module.exports={
     signup,
     login,
     edit,
-    deleteUser
+    deleteUser,
+    getUser
 }
