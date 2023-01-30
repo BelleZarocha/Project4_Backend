@@ -232,6 +232,7 @@ const editPet=(req, res)=>{
 
             bcrypt.hash(req.body.password, salt, (err, hashedPwd) => {
                 if (err) return res.status(500);
+                console.log(decodeUser);
                 Pet.update({
                     name:req.body.petName,
                     species: req.body.petSpecies
