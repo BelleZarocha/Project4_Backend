@@ -82,7 +82,7 @@ const buy =(req,res)=>{
                 package_id: req.body.package_id
             },
             {
-                where: {username: decodedUser.id}
+                where: {username: decodedUser.username}
             }
         ).then((r) => {
             console.log("fin");
