@@ -211,7 +211,7 @@ const deleteUser = async (req, res) => {
         User.destroy({where: {id: decodedUser.id}});
     });
 };
-const editPet=()=>{
+const editPet=(req, res)=>{
     const bearerHeader = req.headers["authorization"];
     if (typeof bearerHeader !== "undefined") {
         const bearer = bearerHeader.split(" ");
