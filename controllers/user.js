@@ -211,11 +211,61 @@ const deleteUser = async (req, res) => {
         User.destroy({where: {id: decodedUser.id}});
     });
 };
+const editPet=()=>{
+    const bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== "undefined") {
+        const bearer = bearerHeader.split(" ");
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+    }
+
+    jwt.verify(req.token, process.env.JWT_SECRET, (err, decodedUser) => {
+        if (err || !decodedUser)
+            return res.status(401).json({error: "Unauthorized Request"});
+
+        req.user = decodedUser;
+        // return res.json("ok");
+    });
+    if (req.body.password !== "") {
+        bcrypt.genSalt(10, (err, salt) => {
+            if (err) return res.status(500);
+
+            bcrypt.hash(req.body.password, salt, (err, hashedPwd) => {
+                if (err) return res.status(500);
+                Pet.update({
+                    name:req.body.petName,
+                    species: req.body.petSpecies
+                },{
+                    where: {user_id: decodedUser.id},
+                }).then(t=>{
+                    return res.json({status:"cool"})
+                })
+            });
+        });
+    } else {
+        User.update(
+            {
+                username: req.body.username,
+                email: req.body.email,
+                phone: req.body.phone,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                address: req.body.address,
+            },
+            {
+                where: {username: req.user.username},
+            }
+        ).then((r) => {
+        });
+    }
+};
 module.exports = {
     test,
     signup,
     login,
     edit,
     deleteUser,
-    getUser
+    getUser,
+    editPet,
+
 }
