@@ -428,7 +428,7 @@ const getUser = (req, res) => {
                     firstname: resu.firstname,
                     lastname: resu.lastname,
                     pet: pet,
-                    address: address,
+                    address: resu.address,
                 });
             })
 
@@ -565,6 +565,12 @@ const edit = (req, res) => {
                     }
                 ).then((r) => {
                 });
+                Pet.update({
+                    name:req.body.petName,
+                    species: req.body.petSpecies
+                },{
+                    where: {user_id: decodedUser.id},
+                }).then(t=>{})
             });
         });
     } else {
