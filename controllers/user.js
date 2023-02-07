@@ -115,7 +115,7 @@ const signup = async (req, res) => {
                                 expire_date: "2023-01-30T09:19:19.080Z",
                                 image: "https://cdn.pixabay.com/photo/2017/10/29/18/00/chihuahua-2900362__480.jpg",
                                 name: "kitties",
-                                package_id: 20,
+                                package_id: 0,
                                 species: "cat",
                                 start_date: "2023-01-30T09:19:19.080Z",
                                 type: 1,
